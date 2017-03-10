@@ -27,5 +27,6 @@ setup(
     ],
     keywords='open-korean-text open-korean-text-processor',
     packages=find_packages(),
+    package_data={ '': ['jar/*.jar'] },
     install_requires=['Jpype1'],
 )
