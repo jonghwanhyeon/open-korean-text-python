@@ -2,7 +2,7 @@ from setuptools import setup, find_packages
 
 setup(
     name='open-korean-text-python',
-    version='0.1.0',
+    version='0.1.1',
     description='Python interface to Open Korean Text Processor',
     url='https://github.com/hyeon0145/open-korean-text-python',
     author='Jonghwan Hyeon',
