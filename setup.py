@@ -1,4 +1,25 @@
+import os
+import subprocess
+
 from setuptools import setup, find_packages
+from setuptools.command.install import install
+
+class InstallCommand(install):
+    def run(self):
+        original_working_directory = os.getcwd()
+        path_prefix = os.path.dirname(os.path.realpath(__file__))
+
+        os.chdir(os.path.join(path_prefix, 'openkoreantext', 'jar'))
+        for group_id, artifact_id in [
+                ('org.openkoreantext', 'open-korean-text'),
+                ('org.scala-lang', 'scala-library'),
+                ('com.twitter', 'twitter-text')
+            ]:
+            print('downloading {group_id}.{artifact_id}.jar'.format(group_id=group_id, artifact_id=artifact_id))
+            subprocess.call([ 'python3', 'download-jar.py', group_id, artifact_id ])
+        os.chdir(original_working_directory)
+
+        super().run()
 
 setup(
     name='open-korean-text-python',
@@ -27,6 +48,11 @@ setup(
     ],
     keywords='open-korean-text open-korean-text-processor',
     packages=find_packages(),
-    package_data={ '': ['jar/*.jar'] },
-    install_requires=['Jpype1'],
+    install_requires=[ 'Jpype1' ],
+    package_data={
+        'openkoreantext': [ 'jar/*.jar' ]
+    },
+    cmdclass={
+        'install': InstallCommand,
+    }
 )
